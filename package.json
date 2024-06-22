@@ -14,7 +14,7 @@
     "url": "https://github.com/animo/animo-mediator"
   },
   "engines": {
-    "node": "18.8.0"
+    "node": "18.19.0"
   },
   "packageManager": "yarn@1.22.19",
   "scripts": {
