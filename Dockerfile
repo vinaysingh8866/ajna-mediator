@@ -13,28 +13,23 @@ RUN apt-get update -y && apt-get install -y \
     gcc \
     g++ \
     ca-certificates \
-    git
-
-# Set Python alias and ensure it is recognized
-RUN ln -s /usr/bin/python3 /usr/bin/python
+    git \
+    && ln -s /usr/bin/python3 /usr/bin/python
 
 # Install NVM and Node.js
 ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION 18.20.0
 
-RUN mkdir -p $NVM_DIR \
-    && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
     && . $NVM_DIR/nvm.sh \
     && nvm install $NODE_VERSION \
-    && nvm use $NODE_VERSION \
     && nvm alias default $NODE_VERSION
-
-# Set the npm configuration variable python, pointing to the Python executable
-RUN npm config set python /usr/bin/python
-
 
 # Ensure Node and npm are available in the PATH
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
+# Set the npm configuration variable python, pointing to the Python executable
+RUN npm config set python /usr/bin/python
 
 # Enable corepack to manage package managers like Yarn and pnpm
 RUN corepack enable
@@ -48,14 +43,14 @@ FROM base as setup
 WORKDIR /www
 
 # Copy package.json and yarn.lock for dependency installation
-COPY package.json yarn.lock /www/
+COPY package.json yarn.lock ./
 
 # Install all dependencies
 RUN yarn install
 
 # Copy TypeScript config and all application source files
 COPY tsconfig.build.json ./
-COPY . /www/
+COPY . .
 
 # Build the application
 RUN yarn build
@@ -66,11 +61,11 @@ FROM base as final
 WORKDIR /www
 
 # Copy built application from the setup stage
-COPY --from=setup /www/build /www/build
+COPY --from=setup /www/build ./build
 COPY --from=setup /tmp/yarn-cache /tmp/yarn-cache
 
 # Copy package management files
-COPY package.json yarn.lock /www/
+COPY package.json yarn.lock ./
 
 # Install production dependencies
 RUN yarn install --production
@@ -80,6 +75,7 @@ RUN yarn cache clean
 
 # Define the command to run the application
 ENTRYPOINT ["yarn", "start"]
+
 
 # FROM ubuntu:22.04 as base
 
