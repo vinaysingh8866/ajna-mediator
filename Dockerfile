@@ -19,7 +19,8 @@ RUN apt-get update -y && apt-get install -y \
 # Install NVM and Node.js
 ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION 18.20.0
-
+# create the NVM directory
+RUN mkdir -p $NVM_DIR
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
     && . $NVM_DIR/nvm.sh \
     && nvm install $NODE_VERSION \
