@@ -19,6 +19,7 @@ RUN apt-get update -y && apt-get install -y \
 # Install NVM and Node.js
 ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION 18.20.0
+
 # create the NVM directory
 RUN mkdir -p $NVM_DIR
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
@@ -28,9 +29,6 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | b
 
 # Ensure Node and npm are available in the PATH
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
-
-# Set the npm configuration variable python, pointing to the Python executable
-RUN npm config set python /usr/bin/python
 
 # Enable corepack to manage package managers like Yarn and pnpm
 RUN corepack enable
@@ -76,6 +74,7 @@ RUN yarn cache clean
 
 # Define the command to run the application
 ENTRYPOINT ["yarn", "start"]
+
 
 
 # FROM ubuntu:22.04 as base
