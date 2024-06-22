@@ -12,15 +12,18 @@ RUN apt-get update -y && apt-get install -y \
     ca-certificates \
     git
 
-# Install NVM and Node.js
+# Set environment variables for NVM
 ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION 18.20.0
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
+# Install NVM, Node.js, and set the default Node.js version
+RUN mkdir -p $NVM_DIR \
+    && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
     && . $NVM_DIR/nvm.sh \
     && nvm install $NODE_VERSION \
     && nvm use $NODE_VERSION \
     && nvm alias default $NODE_VERSION
+
 
 # Ensure Node and npm are available in the PATH
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
