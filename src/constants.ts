@@ -1,12 +1,12 @@
 import { LogLevel } from '@aries-framework/core'
 
 export const AGENT_PORT = process.env.AGENT_PORT ? Number(process.env.AGENT_PORT) : 3000
-export const AGENT_NAME = process.env.AGENT_NAME || 'Animo Mediator'
-export const WALLET_NAME = process.env.WALLET_NAME || 'animo-mediator-dev'
-export const WALLET_KEY = process.env.WALLET_KEY || 'animo-mediator-dev'
+export const AGENT_NAME = process.env.AGENT_NAME || 'Ajna Mediator'
+export const WALLET_NAME = process.env.WALLET_NAME || 'ajna-mediator'
+export const WALLET_KEY = process.env.WALLET_KEY || 'animo-mediator-zFFzFFFhhh16z16171zzz2zz8x1891x87gy3z28x7a%$a#^8}}@'
 export const AGENT_ENDPOINTS = process.env.AGENT_ENDPOINTS?.split(',') ?? [
-  `http://localhost:${AGENT_PORT}`,
-  `ws://localhost:${AGENT_PORT}`,
+  `http://165.22.221.123:${AGENT_PORT}`,
+  `ws://165.22.221.123:${AGENT_PORT}`,
 ]
 
 export const POSTGRES_HOST = process.env.POSTGRES_HOST
@@ -19,4 +19,4 @@ export const INVITATION_URL = process.env.INVITATION_URL
 
 export const LOG_LEVEL = LogLevel.debug
 
-export const IS_DEV = process.env.NODE_ENV === 'development'
+export const IS_DEV = false
