@@ -5,6 +5,9 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Update system and install necessary packages
 RUN apt-get update -y && apt-get install -y \
+    python3 \
+    python3-pip \
+    build-essential \
     curl \
     make \
     gcc \
@@ -12,17 +15,22 @@ RUN apt-get update -y && apt-get install -y \
     ca-certificates \
     git
 
-# Set environment variables for NVM
+# Set Python alias and ensure it is recognized
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
+# Install NVM and Node.js
 ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION 18.20.0
 
-# Install NVM, Node.js, and set the default Node.js version
 RUN mkdir -p $NVM_DIR \
     && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
     && . $NVM_DIR/nvm.sh \
     && nvm install $NODE_VERSION \
     && nvm use $NODE_VERSION \
     && nvm alias default $NODE_VERSION
+
+# Set the npm configuration variable python, pointing to the Python executable
+RUN npm config set python /usr/bin/python
 
 
 # Ensure Node and npm are available in the PATH
